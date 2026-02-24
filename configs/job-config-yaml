@@ -1,0 +1,82 @@
+# ================================================
+# Modern Game Analytics – Spark Job Configuration
+# ================================================
+
+environment:
+  name: local
+  debug: true
+
+data:
+  input:
+    format: json            # json | parquet
+    path: data/raw/events.json
+    partitioned_path: data/partitioned/
+  output:
+    format: parquet         # json | parquet
+    path: data/output/
+    mode: overwrite
+
+simulation:
+  records_per_batch: 1000000
+  skew_enabled: true
+  skew_key: region
+  skew_hot_value: NA
+  skew_multiplier: 50
+
+spark:
+  app:
+    name: modern-game-analytics
+  executor:
+    memory: 4g
+    cores: 2
+    instances: 2
+  driver:
+    memory: 2g
+  sql:
+    shuffle_partitions: 200
+    adaptive_enabled: false
+    auto_broadcast_join_threshold: 10485760  # 10MB
+    files_max_partition_bytes: 134217728     # 128MB
+    broadcast_timeout: 300
+  serialization:
+    serializer: org.apache.spark.serializer.KryoSerializer
+  caching:
+    enable_cache: false
+    storage_level: MEMORY_ONLY
+
+optimization:
+  enable_aqe: true
+  enable_broadcast_join: true
+  enable_partition_pruning: true
+  enable_cache: true
+  target_shuffle_partitions: 64
+  enable_dynamic_partition_pruning: true
+
+benchmark:
+  enabled: true
+  iterations: 3
+  log_execution_plan: true
+  capture_stage_metrics: true
+  output_file: benchmarks/results.json
+
+monitoring:
+  enable_event_log: true
+  event_log_dir: spark-events/
+  enable_sql_ui: true
+
+storage:
+  file_format:
+    naive: json
+    optimized: parquet
+  compression: snappy
+
+streaming:
+  enabled: false
+  trigger_interval: 10 seconds
+  checkpoint_location: data/checkpoints/
+
+feature_flags:
+  simulate_small_files_problem: true
+  simulate_data_skew: true
+  simulate_wide_transformations: true
+  simulate_unnecessary_repartition: true

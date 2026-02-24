@@ -1,0 +1,39 @@
+# ==========================================
+# Modern Game Analytics – Python Dependencies
+# ==========================================
+
+# Core Spark
+pyspark==3.5.1
+
+# Configuration
+pyyaml==6.0.1
+
+# Data Simulation
+faker==24.3.0
+numpy==1.26.4
+
+# Benchmarking & Metrics
+psutil==5.9.8
+tabulate==0.9.0
+
+# Optional: Structured Streaming / Kafka
+kafka-python==2.0.2
+
+# Data Formats
+pyarrow==15.0.0
+fastparquet==2024.2.0
+
+# Testing
+pytest==8.0.2
+pytest-cov==4.1.0
+
+# Development / Notebooks
+jupyter==1.0.0
+ipykernel==6.29.3
+matplotlib==3.8.3
+seaborn==0.13.2
+
+# Code Quality
+black==24.2.0
+flake8==7.0.0
+mypy==1.8.0

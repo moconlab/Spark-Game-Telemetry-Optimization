@@ -1,0 +1,8 @@
+version: "3"
+services:
+  spark:
+    image: bitnami/spark:latest
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "8080:8080"
