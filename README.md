@@ -157,3 +157,49 @@ Measured using:
 - Databricks or Local Spark
 
 - Parquet
+
+## Repo Structure
+
+sspark-game-telemetry-optimization/
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
+├── configs/
+│   ├── pipeline.yaml
+│   └── spark/
+│       ├── baseline.conf
+│       └── optimized.conf
+│
+├── data/
+│   ├── raw/
+│   └── benchmark_results/
+│
+├── docker/
+│   ├── Dockerfile
+│   └── docker-compose.yml
+│
+├── src/
+│   ├── ingestion/
+│   │   └── generate_events.py
+│   │
+│   ├── transformations/
+│   │   ├── event_aggregations.py
+│   │   └── player_metrics.py
+│   │
+│   ├── baseline_jobs/
+│   │   └── unpartitioned_pipeline.py
+│   │
+│   ├── optimized_jobs/
+│   │   └── partitioned_pipeline.py
+│   │
+│   └── utils/
+│       ├── spark_session.py
+│       └── logger.py
+│
+├── benchmarks/
+│   └── run_benchmarks.py
+│
+└── scripts/
+    └── run_pipeline.sh
