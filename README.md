@@ -8,6 +8,18 @@ This project simulates a production-scale game analytics pipeline and focuses on
 
 The goal is to demonstrate deep understanding of Spark internals by intentionally introducing performance bottlenecks and then eliminating them through targeted optimizations.
 
+Goals
+
+1. Simulate **production-scale game telemetry** using synthetic data.  
+2. Build **baseline Spark pipelines** with intentional bottlenecks.  
+3. Implement **optimized pipelines** using advanced Spark techniques:
+   - Partitioning & shuffle optimization  
+   - Broadcast joins  
+   - Caching & persistence  
+   - Predicate pushdown  
+   - Adaptive Query Execution (AQE)  
+4. Benchmark pipelines and compare performance metrics.
+
 ## Problem Statement
 
 A multiplayer game emits high-volume events:
@@ -160,46 +172,40 @@ Measured using:
 
 ## Repo Structure
 
-sspark-game-telemetry-optimization/
+spark-game-telemetry-optimization/
 │
-├── README.md
-├── requirements.txt
-├── .gitignore
-│
-├── configs/
-│   ├── pipeline.yaml
-│   └── spark/
-│       ├── baseline.conf
-│       └── optimized.conf
-│
-├── data/
-│   ├── raw/
-│   └── benchmark_results/
-│
-├── docker/
-│   ├── Dockerfile
-│   └── docker-compose.yml
-│
+├── data/                     # Synthetic telemetry & benchmark results
 ├── src/
-│   ├── ingestion/
-│   │   └── generate_events.py
-│   │
-│   ├── transformations/
-│   │   ├── event_aggregations.py
-│   │   └── player_metrics.py
-│   │
-│   ├── baseline_jobs/
-│   │   └── unpartitioned_pipeline.py
-│   │
-│   ├── optimized_jobs/
-│   │   └── partitioned_pipeline.py
-│   │
-│   └── utils/
-│       ├── spark_session.py
-│       └── logger.py
-│
-├── benchmarks/
-│   └── run_benchmarks.py
-│
-└── scripts/
-    └── run_pipeline.sh
+│   ├── ingestion/            # Generate synthetic telemetry events
+│   ├── transformations/      # Reusable Spark transformations
+│   ├── baseline_jobs/        # Slow, unoptimized pipelines
+│   ├── optimized_jobs/       # Runnable optimized pipelines
+│   ├── optimization/         # Modular experiments (broadcast join, caching, AQE)
+│   └── utils/                # Spark session & logging helpers
+├── benchmarks/               # Scripts to benchmark all pipelines
+├── configs/                  # Pipeline & Spark configuration files
+├── scripts/                  # Helper scripts to run pipelines
+└── docker/                   # Docker & docker-compose setup
+
+
+## Data & Pipeline Flow
+
+[ Synthetic Telemetry Generator ]
+              │
+              ▼
+       data/raw/*.csv
+              │
+    ┌─────────┴─────────┐
+    │                   │
+[ baseline_jobs ]   [ optimized_jobs ]
+(unoptimized)       (optimized pipelines)
+    │                   │
+    ▼                   ▼
+baseline_results     optimized_results
+    │                   │
+    └─────────┐─────────┘
+              ▼
+       benchmarks/run_benchmarks.py
+              │
+              ▼
+   Performance metrics & comparison
